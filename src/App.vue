@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <!-- <v-header :seller="seller"></v-header> -->
+    <v-header :seller="seller"></v-header>
     <div class="tab">
       <div class="tab-item">商品</div>
       <div class="tab-item">评论</div>
@@ -15,7 +15,9 @@ const middleOK = 0;
 export default {
   data() {
     return {
-      seller: this.seller
+      seller: {
+        
+      }
     }
   },
   created() {
