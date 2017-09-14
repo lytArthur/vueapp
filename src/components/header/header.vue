@@ -18,7 +18,7 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div v-if="seller.supports" class="support-count">
+      <div v-if="seller.supports" class="support-count" @click="detialShowAbove">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
@@ -29,17 +29,25 @@
       <span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
-    
-    <div class="showDetail">
-        <div class="showDetail-title">{{seller.name}}</div>
-        <div class="star-wraper">
-          
+
+    <div class="showDetail" v-show="detialShow" @click="detialShowAbove">
+      <div class="detail-wrapper clearfix">
+        <div class="detail-main">
+          <h1 class="name">{{seller.name}}</h1>
+          <div class="star-wraper">
+
+          </div>
         </div>
-        <div class="discount-line">
+        <!-- <div class="discount-line">
           <div class="line"></div>
           <div class="center-text">优惠信息</div>
           <div class="line"></div>
-        </div>
+        </div> -->
+      </div>
+
+      <div class="detail-close">
+         <i class="icon-close"></i>
+      </div>
     </div>
 
   </div>
@@ -49,6 +57,16 @@ export default {
   props: {
     seller: {
       type: Object
+    }
+  },
+  data() {
+    return {
+      detialShow: false
+    }
+  },
+  methods: {
+    detialShowAbove() {
+      this.detialShow = true
     }
   },
   created() {
@@ -173,13 +191,24 @@ export default {
     top: 0
     left: 0
     z-index: 9
-    .showDetail-title
+    .detail-wrapper
       width: 100%
-      height: auto
-      margin-top: 64px
-      text-align: center
-      font-size: 16px
-      line-height: 16px
-      font-weight: 700
-      color: #fff
+      min-height: 100%
+      .detail-main
+        // margin-top: 60px
+        padding-top: 64px
+        .name
+          color: #ffffff
+          font-size: 16px
+          font-weight: 700
+          text-align: center
+          line-height: 16px
+    .detail-close
+      width: 32px
+      height: 32px
+      position: relative;
+      margin: -64px auto 0 auto
+      font-size: 32px
+      clear both
+      colo: #fff
 </style>
