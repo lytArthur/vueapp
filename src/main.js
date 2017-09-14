@@ -8,6 +8,8 @@ import VueResource from 'vue-resource';
 import goods from './components/goods/goods';
 import seller from './components/seller/seller';
 import ratings from './components/ratings/ratings';
+import star from './components/star/star.vue';
+import  './common/stylus/index.styl';
 
 Vue.config.productionTip = false
 Vue.use(vueRoute);

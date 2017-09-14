@@ -15,16 +15,13 @@ const middleOK = 0;
 export default {
   data() {
     return {
-      seller: {
-        
-      }
+      seller:  {}
     }
   },
   created() {
-    let _this = this;
     this.$http.get('/api/seller').then((response) => {
       response = response.body;
-      if (middleOK === 0) {
+      if (response.errno === 0) {
         this.seller = Object.assign({}, this.seller, response.data);
       }
       console.log(response);
