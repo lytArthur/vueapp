@@ -1,6 +1,7 @@
 <template>
   <div class="header">
     <div class="content-warper">
+      <img :src="seller.avatar" class="bgImg">
       <div class="avatar">
         <img width="64" height="64" :src="seller.avatar">
       </div>
@@ -24,35 +25,45 @@
       </div>
     </div>
 
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="detialShowAbove">
       <span class="bulletin-title"></span>
       <span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
 
-    <div class="showDetail" v-show="detialShow" @click="detialShowAbove">
+    <div class="showDetail" v-show="detialShow">
       <div class="detail-wrapper clearfix">
         <div class="detail-main">
           <h1 class="name">{{seller.name}}</h1>
           <div class="star-wraper">
-
+            <star :size="48" :score="seller.score"></star>
+          </div>
+          <div class="title">
+            <div class="line"></div>
+            <div class="text">优惠商品</div>
+            <div class="line"></div>
+          </div>
+          <ul v-if="seller.supports"  class="supports">
+            <li v-for="(item,index) in seller.supports" class="support-item">
+              <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+              <span class="text">{{seller.supports[index].description}}</span>
+            </li>
+          </ul>
+          <div class="bulletin">
+               <p class="content">{{seller.bulletin}}</p>
           </div>
         </div>
-        <!-- <div class="discount-line">
-          <div class="line"></div>
-          <div class="center-text">优惠信息</div>
-          <div class="line"></div>
-        </div> -->
       </div>
 
-      <div class="detail-close">
-         <i class="icon-close"></i>
+      <div class="detail-close" @click="detailHidden">
+        <i class="icon-close"></i>
       </div>
     </div>
 
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import star from '../../components/star/star'
 export default {
   props: {
     seller: {
@@ -67,11 +78,17 @@ export default {
   methods: {
     detialShowAbove() {
       this.detialShow = true
+    },
+    detailHidden() {
+      this.detialShow = false
     }
   },
   created() {
     console.log(this);
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+  },
+  components: {
+    star
   }
 }
 </script>
@@ -86,6 +103,14 @@ export default {
     position: relative
     padding: 24px 12px 18px 24px
     font-size: 0
+    .bgImg
+      width: 100%
+      height: auto
+      filter: blur(10px)
+      position: absolute
+      top: 0px
+      left: 0px
+      z-index: -1
     .avatar
       display: inline-block
       vertical-align: top
@@ -195,14 +220,74 @@ export default {
       width: 100%
       min-height: 100%
       .detail-main
-        // margin-top: 60px
-        padding-top: 64px
+        margin-top: 64px
+        padding-bottom: 64px
         .name
           color: #ffffff
           font-size: 16px
           font-weight: 700
           text-align: center
           line-height: 16px
+        .star-wraper
+          margin-top: 18px
+          margin-bottom: 28px
+        .title
+          display: flex;
+          width: 80%  
+          margin-left: auto
+          margin-right: auto
+          margin-top: 28px
+          margin-bottom: 24px
+          .line
+            flex: 1
+            position: relative
+            top: -6px
+            border-bottom 1px  solid rgba(255,255,255,0.2)
+          .text
+            fong-size: 14px
+            font-weight: 700
+            line-height: 14px
+            color: #ffffff;
+            margin-left: 12px
+            margin-right: 12px
+        .supports
+          width: 80%
+          margin-left: auto
+          margin-right: auto
+          .support-item
+            padding: 0 12px
+            margin-bottom: 12px
+            font-size: 12px
+            color: #fff
+            .icon
+              width: 16px
+              height: 16px;
+              background-size: 16px 16px
+              display :inline-block
+              vertical-align: top
+              &.decrease
+                bg-image('decrease_2')
+              &.discount
+                bg-image('discount_2')
+              &.guarantee
+                bg-image('guarantee_2')
+              &.invoice
+                bg-image('invoice_2')
+              &.special
+                bg-image('special_2')
+            .text
+              display: inline-block
+              vertical-align: top
+              line-height: 16px
+        .bulletin
+          width: 80%
+          margin: 0 auto
+          .content
+             line-height: 24px
+             font-size: 12px
+             color: #ffffff
+             text-align: justify
+             margin-top: 24px
     .detail-close
       width: 32px
       height: 32px
@@ -210,5 +295,6 @@ export default {
       margin: -64px auto 0 auto
       font-size: 32px
       clear both
-      colo: #fff
+      color: #fff
 </style>
+
