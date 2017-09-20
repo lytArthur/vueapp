@@ -29,6 +29,9 @@
                   <span class="now">￥{{food.price}}</span>
                   <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrap">
+                   <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
@@ -36,14 +39,14 @@
       </ul>
     </div>
 
-    <div class="shopcart">
-      
-    </div>
+  <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+
   </div>
 </template>
 <script>
 import BScroll from 'better-scroll';
 import shopcart from '../../components/shopcart/shopcart';
+import cartcontrol from '../../components/cartcontrol/cartcontrol'
 const ERR_OK = 0;
 export default {
   props: {
@@ -77,7 +80,6 @@ export default {
         let height1 = this.listHeight[i];
         let height2 = this.listHeight[i + 1];
         if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-          console.log(i);
           return i;
         }
       }
@@ -99,6 +101,7 @@ export default {
         click: true
       });
       this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+        click: true,
         probeType: 3
       });
       this.foodsScroll.on("scroll", (pos) => {
@@ -117,7 +120,8 @@ export default {
     }
   },
   components:{
-    shopcart
+    shopcart,
+    cartcontrol 
   }
 }
 </script>
@@ -188,6 +192,7 @@ export default {
       display: flex
       margin: 18px
       border-1px(rgba(7,17,27,0.2))
+      position: relative
       &:last-child
         margin-bottom: 0
         border-none()
@@ -213,6 +218,10 @@ export default {
         .price
           font-weight: 700
           line-height: 24px
+        .cartcontrol-wrap
+          position: absolute
+          right: 0
+          bottom: 12px
           .now
             margin-right: 8px
             font-size: 14px
