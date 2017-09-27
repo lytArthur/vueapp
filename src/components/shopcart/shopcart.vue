@@ -6,7 +6,7 @@
                     <div class="logo" :class="{'highlight': totalCount > 0}">
                         <i class="icon-shopping_cart" :class="{'highlight': totalCount > 0}"></i>
                     </div>
-                    <div class="num" v-show="totalCount>0">{{totalCount}}</div>
+                    <div class="num" v-show="totalCount > 0">{{totalCount}}</div>
                 </div>
                 <div class="price" :class="{'highlight': totalPrice > 0}">￥{{totalPrice}}元</div>
                 <div class="desc">另需配送费￥{{deliveryPrice}}</div>
@@ -16,21 +16,28 @@
                     {{payDesc}}
                 </div>
             </div>
+
+      <div class="ball-container">
+        <div v-for="ball in balls">
+          <transition name="drop">
+            <div class="ball" v-show="ball.show">
+              <div class="inner inner-hook"></div>
+            </div>
+          </transition>
+        </div>
+      </div>
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
+import BScroll from 'better-scroll';
+import cartcontrol from '../../components/cartcontrol/cartcontrol';
 export default {
     props: {
-        selectFood: {
+        selectFoods: {
             type: Array,
             default() {
-                return [
-                    // {
-                    //     price: 1,
-                    //     count: 3
-                    // }
-                ]
+                return []
             }
         },
         deliveryPrice: {
@@ -42,17 +49,27 @@ export default {
             default: 0
         }
     },
+    data() {
+        return {
+            balls: [
+                {
+                    show: false
+                }
+            ]
+        }
+    },
     computed: {
         totalPrice() {
             let total = 0;
-            this.selectFood.forEach((food) => {
+            this.selectFoods.forEach((food) => {
                 total += food.price * food.count
             })
             return total;
         },
         totalCount() {
             let count = 0;
-            this.selectFood.forEach((food) => {
+            console.log("000");
+            this.selectFoods.forEach((food) => {
                 count += food.count
             });
             return count
@@ -170,4 +187,19 @@ export default {
         &.enough
           background: #00b43c
           color: #fff
+    .ball-container
+      .ball
+        position: fixed
+        left: 32px
+        bottom: 22px
+        z-index: 200
+        transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+        .inner
+          width: 16px
+          height: 16px
+          border-radius: 50%
+          background: rgb(0, 160, 220)
+          transition: all 0.4s linear
+    
 </style>
+

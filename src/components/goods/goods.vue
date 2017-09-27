@@ -30,7 +30,7 @@
                   <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrap">
-                   <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol :food="food"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -39,7 +39,7 @@
       </ul>
     </div>
 
-  <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart ref="shopcart" :select-foods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 
   </div>
 </template>
@@ -58,18 +58,21 @@ export default {
     return {
       goods: [],
       listHeight: [],
-      scrollY: 0
+      scrollY: 0,
+      selectedFood: {}
     }
   },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     this.$http.get('/api/goods').then((response) => {
       response = response.body;
+      console.log(response.data);
       if (response.errno === 0) {
-        this.goods = Object.assign({}, this.goods, response.data);
+        // this.goods = Object.assign({}, this.goods, response.data);
+        this.goods = response.data
         this.$nextTick(() => {
-          this._initScroll()
-          this._calculateHeight()
+          this._initScroll();
+          this._calculateHeight();
         })
       }
     });
@@ -84,6 +87,17 @@ export default {
         }
       }
       return 0;
+    },
+    selectFoods() {
+      let foods = [];
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if (food.count) {
+            foods.push(food);
+          }
+        });
+      });
+      return foods;
     }
   },
   methods: {
@@ -93,7 +107,6 @@ export default {
       }
       let foodList = this.$refs.foodList
       let el = foodList[index];
-      console.log(el);
       this.foodsScroll.scrollToElement(el, 300);
     },
     _initScroll() {
@@ -114,14 +127,13 @@ export default {
       for (let i = 0; i < foodList.length; i++) {
         let item = foodList[i];
         height += item.clientHeight;
-        console.log(height);
         this.listHeight.push(height);
       }
     }
   },
-  components:{
+  components: {
     shopcart,
-    cartcontrol 
+    cartcontrol
   }
 }
 </script>

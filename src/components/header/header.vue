@@ -84,7 +84,6 @@ export default {
     }
   },
   created() {
-    console.log(this);
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
   },
   components: {
@@ -215,7 +214,7 @@ export default {
     position:fixed
     top: 0
     left: 0
-    z-index: 9
+    z-index: 99
     .detail-wrapper
       width: 100%
       min-height: 100%

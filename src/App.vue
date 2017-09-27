@@ -38,7 +38,6 @@ export default {
       if (response.errno === 0) {
         this.seller = Object.assign({}, this.seller, response.data);
       }
-      console.log(response);
     });
   },
   components: {
